@@ -1,93 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import styled from 'styled-components'
-import { Form, Input, Button, Checkbox } from 'antd';
 import LoginAuth from '../../../public/login_auth.svg'
-
-type EmailModeProps = 'login' | 'register';
+import ToggleMode from '../../../components/OAuth/Login/ToggleMode'
+import Email from '../../../components/OAuth/Login/Email'
 
 const OAuthLogin: React.FC = () => {
-
   // 登录方式
   const [mode, setMode] = useState<'email'>('email') // email ... ...
-  // email 登录模式
-  const [emailMode, setEmailMode] = useState<EmailModeProps>('login')
 
-  const onFinishEmail = (values: any): void => {
-    console.log('Success:', values);
-  };
-
-  const onFinishFailedEmail = (errorInfo: any): void => {
-    console.log('Failed:', errorInfo);
-  };
-
-  // 设置 email 登录模式
-  const setEmailModeFn = (val: EmailModeProps): void => {
-    setEmailMode(val)
-  }
-
-  // Email form
-  const EmailForm = () => {
-    return (
-      <StyledEmailForm
-        layout="vertical"
-        initialValues={{ remember: true }}
-        onFinish={onFinishEmail}
-        onFinishFailed={onFinishFailedEmail}
-      >
-        <StyledFormItem
-          label=""
-          name="username"
-          rules={[{ required: true, message: '请输入邮箱' }]}
-        >
-          <Input className="form-input" placeholder="请输入邮箱" />
-        </StyledFormItem>
-
-        <StyledFormItem
-          label=""
-          name="password"
-          rules={[{ required: true, message: '请输入密码' }]}
-        >
-          <Input.Password className="form-input-password" placeholder="请输入密码" />
-        </StyledFormItem>
-
-        {
-          emailMode === 'register' ?
-          <StyledFormItem
-            label=""
-            name="code"
-            rules={[{ required: true, message: '请输入验证码' }]}
-          >
-            <Input className="form-input" placeholder="请输入验证码" />
-            <StyledFormBtnText className="code" type="button" onClick={ () => alert('发送验证码') }>获取验证码</StyledFormBtnText>
-          </StyledFormItem> : null
-        }
-
-        <StyledFormItem className="space-between">
-          <StyledFormFlexSpaceBetween>
-            <StyledFormBtn htmlType="submit">
-            { emailMode === 'login' ? '登录' : '注册' }
-            </StyledFormBtn>
-            {
-              emailMode === 'login' ? <StyledFormBtnText type="button" onClick={() => setEmailModeFn('register') }>注册</StyledFormBtnText> : null
-            }
-            {
-              emailMode === 'register' ? <StyledFormBtnText type="button" onClick={() => setEmailModeFn('login') }>登录</StyledFormBtnText> : null
-            }
-          </StyledFormFlexSpaceBetween>
-        </StyledFormItem>
-      </StyledEmailForm>
-    )
-  }
+  // tips 根据 mode 显示
+  const tips = useMemo(() => {
+    let list = {
+      email: '使用邮箱登录',
+      wechat: '关注「Andoromeda仙女座」公众号，即可登录。'
+    }
+    return list[mode]
+  }, [mode])
 
   return (
     <StyledWrapper>
       <StyledWrapperInner>
         <StyledWrapperMain>
-          <StyledMethod>{ emailMode === 'login' ? '邮箱登录' : '邮箱注册' }</StyledMethod>
           <StyledWrapperContent>
-            { EmailForm() }
+            {
+              mode === 'email' ? <Email></Email> : null
+            }
+            <ToggleMode></ToggleMode>
           </StyledWrapperContent>
-          <StyledFollowPublishAccount>关注「Andoromeda仙女座」公众号，即可登录。</StyledFollowPublishAccount>
+          <StyledFollowPublishAccount>{ tips }</StyledFollowPublishAccount>
         </StyledWrapperMain>
         <StyledDecoration src={ LoginAuth } alt="书桌" />
       </StyledWrapperInner>
@@ -95,7 +35,7 @@ const OAuthLogin: React.FC = () => {
   )
 }
 
-const StyledWrapper = styled.div`
+const StyledWrapper = styled.section`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -124,12 +64,7 @@ const StyledWrapper = styled.div`
     }
   }
 `
-const StyledMethod = styled.p`
-  font-size: 32px;
-  font-weight: 600;
-  padding: 0;
-  margin: 0;
-`
+
 const StyledWrapperInner = styled.section`
   display: flex;
   align-items: flex-start;
@@ -141,19 +76,11 @@ const StyledWrapperMain = styled.section`
   width: 346px;
   overflow: hidden;
 `
-const StyledEmailForm = styled(Form)`
-  width: 346px;
-`
 
-const StyledWrapperContent = styled.section`
-  margin-top: 50px;
-  display: flex;
-  flex-wrap: nowrap;
-  transition: transform 0.3s;
-`
+const StyledWrapperContent = styled.section``
 
 const StyledFollowPublishAccount = styled.section`
-  margin-top: 80px;
+  margin-top: 30px;
   font-size: 12px;
   color: #9b9b9f;
 `
@@ -169,78 +96,5 @@ const StyledDecoration = styled.img`
     display: none;
   }
 `
-
-// ----------------- Email form -----------------
-const StyledFormItem = styled(Form.Item)`
-  width: 100%;
-  .form-input[type="text"] {
-    border: none;
-    border-bottom: 1px solid #f1f1f1;
-    transition: all .3s;
-    border-radius: 0;
-  }
-  .form-input:focus,
-  .form-input-password {
-    box-shadow: none !important;
-  }
-
-  .form-input-password {
-    border: none;
-    border-bottom: 1px solid #f1f1f1;
-    transition: all .3s;
-    border-radius: 0;
-  }
-  .form-input-password:hover,
-  .ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover {
-    border-color: none !important;
-  }
-
-  .ant-form-item-control-input-content {
-    position: relative;
-  }
-`
-const StyledFormBtn = styled(Button)`
-  border: none;
-  height: 36px;
-  line-height: 36px;
-  font-size: 14px;
-  border-radius: 20px;
-  cursor: pointer;
-
-  padding: 0 30px;
-  background-color: #fdab0e;
-  font-weight: 600;
-  color: #fff;
-  transition: background-color .3s;
-  &:disabled {
-    cursor: not-allowed;
-    background-color: #9b9b9f;
-  }
-  &:hover, &:focus, &:active {
-    background-color: #f09e02;
-    color: #fff;
-  }
-`
-const StyledFormFlexSpaceBetween = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-top: 70px;
-`
-const StyledFormBtnText = styled.button`
-  border: none;
-  height: 36px;
-  line-height: 36px;
-  font-size: 14px;
-  border-radius: 20px;
-  cursor: pointer;
-  background-color: transparent;
-  color: #9b9b9f;
-  &.code {
-    position: absolute;
-    right: 0;
-    bottom: 0px;
-  }
-`
-// ----------------- Email form -----------------
 
 export default OAuthLogin
