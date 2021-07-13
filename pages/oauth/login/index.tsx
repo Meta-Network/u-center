@@ -1,12 +1,14 @@
 import React, { useState, useMemo } from 'react';
 import styled from 'styled-components'
+import { useSpring, animated } from 'react-spring'
+
 import LoginAuth from '../../../public/login_auth.svg'
 import ToggleMode from '../../../components/OAuth/Login/ToggleMode'
 import Email from '../../../components/OAuth/Login/Email'
 
 const OAuthLogin: React.FC = () => {
   // 登录方式
-  const [mode, setMode] = useState<'email'>('email') // email ... ...
+  const [mode, setMode] = useState<'email'>('email') // email ...
 
   // tips 根据 mode 显示
   const tips = useMemo(() => {
@@ -17,10 +19,21 @@ const OAuthLogin: React.FC = () => {
     return list[mode]
   }, [mode])
 
+  // animated start
+  const animatedDecoration = useSpring({
+    from: { x: 40, opacity: 0 },
+    to: { x: 0, opacity: 1 },
+  })
+  const animatedMain = useSpring({
+    from: { x: -40, opacity: 0 },
+    to: { x: 0, opacity: 1 },
+  })
+  // animated end
+
   return (
     <StyledWrapper>
       <StyledWrapperInner>
-        <StyledWrapperMain>
+        <StyledWrapperMain style={{ ...animatedMain }}>
           <StyledWrapperContent>
             {
               mode === 'email' ? <Email></Email> : null
@@ -29,7 +42,7 @@ const OAuthLogin: React.FC = () => {
           </StyledWrapperContent>
           <StyledFollowPublishAccount>{ tips }</StyledFollowPublishAccount>
         </StyledWrapperMain>
-        <StyledDecoration src={ LoginAuth } alt="书桌" />
+        <StyledDecoration src={ LoginAuth } alt="书桌" style={{ ...animatedDecoration }} />
       </StyledWrapperInner>
     </StyledWrapper>
   )
@@ -72,7 +85,8 @@ const StyledWrapperInner = styled.section`
     text-align: center;
   }
 `
-const StyledWrapperMain = styled.section`
+
+const StyledWrapperMain = styled(animated.section)`
   width: 346px;
   overflow: hidden;
 `
@@ -85,7 +99,7 @@ const StyledFollowPublishAccount = styled.section`
   color: #9b9b9f;
 `
 
-const StyledDecoration = styled.img`
+const StyledDecoration = styled(animated.img)`
   margin-left: 200px;
   @media screen and (max-width: 1440px) {
     margin-left: 50px;

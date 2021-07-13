@@ -77,7 +77,7 @@ const Email: React.FC<Props> = ({ setEmailModeFn }) => {
         <StyledFormBtnText className="code" type="button" onClick={() => alert('发送验证码')}>获取验证码</StyledFormBtnText>
       </StyledFormCode>
 
-      <StyledFormItem className="space-between">
+      <StyledFormItem>
         <StyledFormFlexSpaceBetween>
           <StyledFormBtn htmlType="submit">
             注册
@@ -132,7 +132,7 @@ const StyledFormBtn = styled(Button)`
   cursor: pointer;
 
   padding: 0 30px;
-  background-color: #fdab0e;
+  background-color: #1da1f2;
   font-weight: 600;
   color: #fff;
   transition: background-color .3s;
@@ -141,7 +141,7 @@ const StyledFormBtn = styled(Button)`
     background-color: #9b9b9f;
   }
   &:hover, &:focus, &:active {
-    background-color: #f09e02;
+    background-color: #1a91da;
     color: #fff;
   }
 `
