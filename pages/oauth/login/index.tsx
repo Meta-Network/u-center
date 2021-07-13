@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import styled from 'styled-components'
 import { useSpring, animated } from 'react-spring'
 
-import LoginAuth from '../../../public/login_auth.svg'
+import LoginAuth from '../../../assets/svg/login_auth.svg'
 import ToggleMode from '../../../components/OAuth/Login/ToggleMode'
 import Email from '../../../components/OAuth/Login/Email'
 
