@@ -43,7 +43,8 @@ const StyledContainer = styled.div`
   justify-content: space-between;
   box-sizing: border-box;
   @media screen and (max-width: 576px) {
-    padding: 0 10px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 `
 const StyledLogo = styled(UIcon)`
