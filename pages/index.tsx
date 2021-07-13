@@ -38,15 +38,6 @@ export default function Home() {
 
   useChain([springRefTitle, springRefDescription], [0, 0.3])
 
-  const animatedItemLeft = useSpring({
-    from: { x: -40, opacity: 0 },
-    to: { x: 0, opacity: 1 },
-  })
-  const animatedItemRight = useSpring({
-    from: { x: 40, opacity: 0 },
-    to: { x: 0, opacity: 1 },
-  })
-
   const animatedItemLeftConfig = useCallback((state) => {
     return state ? { x: 0, opacity: 1 } : { x: -40, opacity: 0 }
   }, [])
